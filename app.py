@@ -176,32 +176,36 @@ def verify_token(current_user):
     }), 200
 
 
-@app.route("/chat", methods=["POST"])
+@app.route("/chat/completions", methods=["POST"])
 def chat():
-    data = request.get_json()
-
-    if not data or "message" not in data:
-        return jsonify({"error": "Message is required"}), 400
-
-    user_message = data["message"]
-    prompt = f"[INST] {user_message} [/INST]"
-
-    inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
-    outputs = model.generate(
-        **inputs,
-        max_new_tokens=256,
-        do_sample=True,
-        temperature=0.7,
-        top_p=0.95,
-        pad_token_id=tokenizer.eos_token_id,
-    )
-
-    response_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    if not request.is_json:
+        return jsonify({"error": "Requête non valide"}), 400
     
-    # Pour retirer le prompt initial dans la réponse si nécessaire
-    response_text = response_text.replace(prompt, "").strip()
+    # Récupérer les données de la requête
+    data = request.get_json()
+    messages = data.get('messages', [])
+    
+    if not messages:
+        return jsonify({"error": "Aucun message reçu"}), 400
+    
+    user_message = messages[0].get("content", "")
+    
+    # Tokenization du message utilisateur
+    inputs = tokenizer.encode(user_message, return_tensors="pt")
+    
+    # Générer la réponse du modèle
+    with torch.no_grad():
+        outputs = model.generate(inputs, max_length=50, num_return_sequences=1, temperature=0.7, top_p=0.9)
+    
+    # Décoder la réponse générée
+    bot_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-    return jsonify({"response": response_text})
+    return jsonify({"choices": [{
+            "message": {
+                "role": "bot",
+                "content": bot_response
+            }
+        }]}), 200
 
 
 init_db()

@@ -9,7 +9,7 @@ import datetime
 
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key')
+app.config['SECRET_KEY'] = 'votre_cle_secrete_tres_securisee'
 app.config['DATABASE'] = 'users.db'
 
 def get_db_connection():

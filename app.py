@@ -14,7 +14,7 @@ app.config['DATABASE'] = 'users.db'
 
 model_name = "mistralai/Mistral-7B-Instruct-v0.1"  # ou tout autre modèle compatible
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name)
+model = None 
 
 
 def get_db_connection():
@@ -72,6 +72,13 @@ def token_required(f):
         return f(current_user, *args, **kwargs)
         
     return decorated
+
+# Chargement du modèle à la demande
+def load_model():
+    global model
+    if model is None:
+        # Charger le modèle seulement quand nécessaire pour économiser des ressources
+        model = AutoModelForCausalLM.from_pretrained(model_name)
 
 
 # Page d'accueil
@@ -191,10 +198,10 @@ def chat():
     
     # Tokenization du message utilisateur
     inputs = tokenizer.encode(user_message, return_tensors="pt")
-    
+    load_model()
+
     # Générer la réponse du modèle
-    with torch.no_grad():
-        outputs = model.generate(inputs, max_length=50, num_return_sequences=1, temperature=0.7, top_p=0.9)
+    outputs = model.generate(inputs, max_length=50, num_return_sequences=1, temperature=0.7, top_p=0.9)
     
     # Décoder la réponse générée
     bot_response = tokenizer.decode(outputs[0], skip_special_tokens=True)

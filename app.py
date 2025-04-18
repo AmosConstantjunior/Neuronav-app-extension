@@ -11,9 +11,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'votre_cle_secrete_tres_securisee'
 app.config['DATABASE'] = 'users.db'
+hf_token = os.getenv('HF_USER_ACCESS_TOKEN')
 
 model_name = "mistralai/Mistral-7B-Instruct-v0.1"  # ou tout autre modèle compatible
-tokenizer = AutoTokenizer.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained(model_name, use_auth_token=hf_token)
 model = None 
 
 
@@ -78,7 +79,7 @@ def load_model():
     global model
     if model is None:
         # Charger le modèle seulement quand nécessaire pour économiser des ressources
-        model = AutoModelForCausalLM.from_pretrained(model_name)
+        model = AutoModelForCausalLM.from_pretrained(model_name, use_auth_token=hf_token)
 
 
 # Page d'accueil

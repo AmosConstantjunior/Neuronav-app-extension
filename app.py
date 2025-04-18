@@ -5,12 +5,18 @@ from functools import wraps
 import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
-
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'votre_cle_secrete_tres_securisee'
 app.config['DATABASE'] = 'users.db'
+
+model_name = "mistralai/Mistral-7B-Instruct-v0.1"  # ou tout autre modèle compatible
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, device_map="auto")
+
 
 def get_db_connection():
     conn = sqlite3.connect(app.config['DATABASE'])
@@ -168,6 +174,35 @@ def verify_token(current_user):
             'username': current_user['username']
         }
     }), 200
+
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json()
+
+    if not data or "message" not in data:
+        return jsonify({"error": "Message is required"}), 400
+
+    user_message = data["message"]
+    prompt = f"[INST] {user_message} [/INST]"
+
+    inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+    outputs = model.generate(
+        **inputs,
+        max_new_tokens=256,
+        do_sample=True,
+        temperature=0.7,
+        top_p=0.95,
+        pad_token_id=tokenizer.eos_token_id,
+    )
+
+    response_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    
+    # Pour retirer le prompt initial dans la réponse si nécessaire
+    response_text = response_text.replace(prompt, "").strip()
+
+    return jsonify({"response": response_text})
+
 
 init_db()
 

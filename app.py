@@ -169,7 +169,8 @@ def verify_token(current_user):
         }
     }), 200
 
+init_db()
 
 if __name__ == '__main__':
-    init_db()  # <-- important
+      # <-- important
     app.run(debug=True)

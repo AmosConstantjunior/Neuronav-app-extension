@@ -6,7 +6,6 @@ import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 from transformers import AutoModelForCausalLM, AutoTokenizer
-import torch
 
 
 app = Flask(__name__)

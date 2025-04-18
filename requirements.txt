@@ -5,3 +5,4 @@ PyJWT==2.8.0
 Werkzeug==2.2.3
 transformers==4.37.2
 
+torch-cpu==1.12.0

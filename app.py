@@ -13,7 +13,7 @@ app.config['SECRET_KEY'] = 'votre_cle_secrete_tres_securisee'
 app.config['DATABASE'] = 'users.db'
 hf_token = os.getenv('HF_USER_ACCESS_TOKEN')
 
-model_name = "gpt2"  # ou tout autre modèle compatible
+model_name = "distilgpt2"  # ou tout autre modèle compatible
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = None 
 
@@ -74,7 +74,9 @@ def token_required(f):
         
     return decorated
 
+
 # Chargement du modèle à la demande
+@app.before_first_request
 def load_model():
     global model
     if model is None:

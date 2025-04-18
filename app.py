@@ -171,4 +171,5 @@ def verify_token(current_user):
 
 
 if __name__ == '__main__':
+    init_db()  # <-- important
     app.run(debug=True)

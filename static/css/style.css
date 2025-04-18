@@ -1,0 +1,79 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #7a5dc3;
+    color: white;
+    text-align: center;
+    padding: 50px 0;
+}
+
+.hero h1 {
+    font-size: 28px;
+}
+
+.hero p {
+    margin: 20px 0;
+}
+
+.cta-button {
+    background-color: #ffa700;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.features,
+.courses {
+    text-align: center;
+    padding: 40px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.feature-card,
+.course-card {
+    background-color: white;
+    border: 2px solid #7a5dc3;
+    border-radius: 8px;
+    margin: 10px;
+    padding: 20px;
+    width: 250px;
+    box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
+}
+
+.contact-form {
+    text-align: center;
+    padding: 40px 0;
+    background-color: #7a5dc3;
+    color: white;
+}
+
+.contact-form form input {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+.contact-form form button {
+    background-color: #ffa700;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+}

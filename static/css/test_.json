@@ -1,0 +1,32 @@
+{
+    "name": "Side Panels",
+    "manifest_version": 3,
+    "version": "1.0.0.0",
+    "icons": {
+    "16": "images/Graident_Ai_Robot_1-removebg-preview.png",
+    "48": "images/Graident_Ai_Robot_1-removebg-preview.png",
+    "128": "images/Graident_Ai_Robot_1-removebg-preview.png"
+  },
+    "action": {
+        "default_title": "Click to open side panel"
+    },
+    "permissions": [
+        "sidePanel","storage", "contextMenus",
+    "tts",
+    "notifications",
+    "clipboardWrite"
+    ],
+    "side_panel": {
+        "default_path": "sidebar.html"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'"
+  },
+  "web_accessible_resources": [{
+    "resources": ["auth/auth.html"],
+    "matches": ["<all_urls>"]
+  }]
+}

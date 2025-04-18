@@ -10,10 +10,10 @@ import datetime
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['DATABASE'] = 'users.db'
 
 def get_db_connection():
-    conn = sqlite3.connect(app.config['SQLALCHEMY_DATABASE_URI'])
+    conn = sqlite3.connect(app.config['DATABASE'])
     conn.row_factory = sqlite3.Row
     return conn
 

@@ -13,7 +13,7 @@ app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
 def get_db_connection():
-    conn = sqlite3.connect(app.config['DATABASE'])
+    conn = sqlite3.connect(app.config['SQLALCHEMY_DATABASE_URI'])
     conn.row_factory = sqlite3.Row
     return conn
 

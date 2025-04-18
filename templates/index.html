@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transform Your Business With Blockchain</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Styles précédents... */
+        
+        /* Nouveaux styles ajoutés */
+        .hero-section {
+            position: relative;
+            padding: 100px 0;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 30%, rgba(79, 195, 247, 0.15) 0%, transparent 50%);
+            z-index: 1;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(90deg, #4fc3f7 0%, #2a8fd6 100%);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(42, 143, 214, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(42, 143, 214, 0.6);
+        }
+        
+        .features-section {
+            padding: 80px 0;
+            background: rgba(11, 17, 32, 0.7);
+        }
+        
+        .feature-box {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            background: rgba(26, 42, 74, 0.5);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #4fc3f7;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #4fc3f7;
+            margin-right: 25px;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .feature-content h4 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .stats-section {
+            padding: 60px 0;
+            background: linear-gradient(135deg, #1a2a4a 0%, #0b1120 100%);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            padding: 30px;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #4fc3f7;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .testimonials-section {
+            padding: 80px 0;
+        }
+        
+        .testimonial-card {
+            background: rgba(26, 42, 74, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px;
+            position: relative;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+        
+        .testimonial-card::before {
+            content: "";
+            font-family: Georgia, serif;
+            font-size: 5rem;
+            color: rgba(79, 195, 247, 0.2);
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            line-height: 1;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+            border: 2px solid #4fc3f7;
+        }
+        
+        .author-info h5 {
+            margin: 0;
+            color: #ffffff;
+        }
+        
+        .author-info p {
+            margin: 5px 0 0;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+        
+        .contact-section {
+            padding: 80px 0;
+            background: rgba(11, 17, 32, 0.7);
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(26, 42, 74, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            border-radius: 5px;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #4fc3f7;
+            background: rgba(255,255,255,0.15);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        footer {
+            background: #0b1120;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .footer-link {
+            color: rgba(255,255,255,0.7);
+            margin: 0 15px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-link:hover {
+            color: #4fc3f7;
+        }
+        
+        .social-links {
+            margin-bottom: 30px;
+        }
+        
+        .social-link {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            margin: 0 10px;
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            transition: all 0.3s;
+        }
+        
+        .social-link:hover {
+            background: #4fc3f7;
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+        
+        /* Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-pattern"></div>
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="container hero-content">
+            <h1>Transform Your Business With Blockchain</h1>
+            <p class="highlight-text">Next Generation Decentralized Solutions</p>
+            <div class="highlight-number floating">03</div>
+            <a href="#contact" class="cta-button">Get Started</a>
+        </div>
+    </section>
+    
+    <!-- Previous content... -->
+    
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2>Why Choose Our Blockchain Solutions</h2>
+            <hr>
+            
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="feature-content">
+                    <h4>Enterprise-Grade Security</h4>
+                    <p>Our blockchain solutions implement military-grade encryption and multi-layer security protocols to protect your digital assets and transactions.</p>
+                </div>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="feature-content">
+                    <h4>Lightning Fast Transactions</h4>
+                    <p>With our optimized consensus algorithms, achieve transaction speeds that outperform traditional blockchain networks by 10x.</p>
+                </div>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </div>
+                <div class="feature-content">
+                    <h4>Scalable Infrastructure</h4>
+                    <p>Our modular architecture allows seamless scaling to meet growing business demands without compromising performance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">200+</div>
+                    <div class="stat-label">Enterprise Clients</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">10M+</div>
+                    <div class="stat-label">Daily Transactions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Countries Served</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2>What Our Clients Say</h2>
+            <hr>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-text">
+                    "Implementing their blockchain solutions transformed our supply chain operations. We've seen a 40% increase in efficiency and complete transparency across all transactions."
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Smith" class="author-avatar">
+                    <div class="author-info">
+                        <h5>John Smith</h5>
+                        <p>CTO, SupplyChain Inc.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-text">
+                    "The security features alone were worth the investment. We sleep better knowing our financial transactions are protected by their cutting-edge blockchain technology."
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Johnson" class="author-avatar">
+                    <div class="author-info">
+                        <h5>Sarah Johnson</h5>
+                        <p>Director of Security, FinTech Global</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2>Ready to Transform Your Business?</h2>
+            <hr>
+            
+            <div class="contact-form">
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Company Name">
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control">
+                            <option value="">Select Service</option>
+                            <option value="infrastructure">Blockchain Infrastructure</option>
+                            <option value="applications">Blockchain Applications</option>
+                            <option value="security">Security Solutions</option>
+                            <option value="consulting">Consulting Services</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="Your Message"></textarea>
+                    </div>
+                    <button type="submit" class="cta-button" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Home</a>
+                <a href="#" class="footer-link">Solutions</a>
+                <a href="#" class="footer-link">Technology</a>
+                <a href="#" class="footer-link">About Us</a>
+                <a href="#" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+            </div>
+            
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-telegram-plane"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-medium-m"></i></a>
+            </div>
+            
+            <p class="copyright">© 2023 Blockchain Solutions Inc. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

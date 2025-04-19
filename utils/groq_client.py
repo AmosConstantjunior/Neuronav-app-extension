@@ -1,6 +1,6 @@
 import requests
 import cv2
-import numpy as np
+# import numpy as np
 
 
 def call_groq(messages, api_key, **model_params):
@@ -39,41 +39,41 @@ def call_groq(messages, api_key, **model_params):
         return {"error": "Erreur de communication avec l'API Groq", "status_code": response.status_code}
 
 
-def detect_objects(image):
-    # Charger le modèle YOLOv8 (assurez-vous que le fichier .onnx existe)
-    net = cv2.dnn.readNet("./yolov8m.onnx")
+# def detect_objects(image):
+#     # Charger le modèle YOLOv8 (assurez-vous que le fichier .onnx existe)
+#     net = cv2.dnn.readNet("./yolov8m.onnx")
 
-    # Obtenir les dimensions de l'image
-    height, width = image.shape[:2]
+#     # Obtenir les dimensions de l'image
+#     height, width = image.shape[:2]
 
-    # Prétraiter l'image pour YOLO
-    blob = cv2.dnn.blobFromImage(image, 1/255.0, (640, 640), (0, 0, 0), True, crop=False)
-    net.setInput(blob)
+#     # Prétraiter l'image pour YOLO
+#     blob = cv2.dnn.blobFromImage(image, 1/255.0, (640, 640), (0, 0, 0), True, crop=False)
+#     net.setInput(blob)
 
-    # Exécuter la détection
-    outputs = net.forward()
+#     # Exécuter la détection
+#     outputs = net.forward()
 
-    # Liste pour stocker les objets détectés
-    detected_objects = []
+#     # Liste pour stocker les objets détectés
+#     detected_objects = []
 
-    # Post-traitement pour extraire les résultats des objets détectés
-    for out in outputs:
-        for detection in out:
-            scores = detection[5:]
-            class_id = np.argmax(scores)
-            confidence = scores[class_id]
+#     # Post-traitement pour extraire les résultats des objets détectés
+#     for out in outputs:
+#         for detection in out:
+#             scores = detection[5:]
+#             class_id = np.argmax(scores)
+#             confidence = scores[class_id]
             
-            if confidence > 0.5:  # Seulement les détections avec une confiance > 50%
-                center_x = int(detection[0] * width)
-                center_y = int(detection[1] * height)
-                w = int(detection[2] * width)
-                h = int(detection[3] * height)
+#             if confidence > 0.5:  # Seulement les détections avec une confiance > 50%
+#                 center_x = int(detection[0] * width)
+#                 center_y = int(detection[1] * height)
+#                 w = int(detection[2] * width)
+#                 h = int(detection[3] * height)
 
-                # Détection de l'objet
-                detected_objects.append({
-                    "class_id": class_id,
-                    "confidence": confidence,
-                    "bbox": [center_x, center_y, w, h]
-                })
+#                 # Détection de l'objet
+#                 detected_objects.append({
+#                     "class_id": class_id,
+#                     "confidence": confidence,
+#                     "bbox": [center_x, center_y, w, h]
+#                 })
 
-    return detected_objects
+#     return detected_objects

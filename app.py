@@ -6,11 +6,9 @@ import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 from utils.groq_client import call_groq,detect_objects  # Assurez-vous que le fichier groq_client.py existe avec la fonction call_groq
-# from PIL import Image
-# import base64
+
 from io import BytesIO
-# import numpy as np
-# import cv2
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'votre_cle_secrete_tres_securisee'

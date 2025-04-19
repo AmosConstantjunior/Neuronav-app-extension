@@ -180,7 +180,8 @@ def chat():
     # Récupérer les données de la requête
     data = request.get_json()
     messages = data.get('messages', [])
-    
+    model_params = data.get("model_params", {})  # <-- ici on récupère les params
+
     if not messages:
         return jsonify({"error": "Aucun message reçu"}), 400
     
@@ -193,7 +194,9 @@ def chat():
     return jsonify({"choices": [{
             "message": {
                 "role": "bot",
-                "content": bot_response
+                "content": messages,
+                # "content": bot_response
+
             }
         }]}), 200
 

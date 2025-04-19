@@ -3,6 +3,7 @@ gunicorn==23.0.0
 PyJWT==2.8.0
 Werkzeug==2.2.3
 transformers==4.37.2
+--only-binary=numpy
 
 # Dépendances supplémentaires pour la détection d'objets avec YOLOv8
 opencv-python==4.8.0.74

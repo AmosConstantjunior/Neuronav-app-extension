@@ -1,21 +1,27 @@
-from flask import Flask, render_template, request, redirect, url_for,jsonify,flash
+from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 import sqlite3
 import os
 from functools import wraps
 import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
-from transformers import AutoModelForCausalLM, AutoTokenizer
-
+from utils.groq_client import call_groq,detect_objects  # Assurez-vous que le fichier groq_client.py existe avec la fonction call_groq
+from PIL import Image
+import base64
+from io import BytesIO
+import numpy as np
+import cv2
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'votre_cle_secrete_tres_securisee'
 app.config['DATABASE'] = 'users.db'
 hf_token = os.getenv('HF_USER_ACCESS_TOKEN')
+api_key = os.getenv('GROQ_API_KEY')
 
-model_name = "distilgpt2"  # ou tout autre modèle compatible
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = None 
+# Supprimer le chargement du modèle PyTorch
+# model_name = "distilgpt2"  # Ce n'est plus utilisé
+# tokenizer = AutoTokenizer.from_pretrained(model_name)
+# model = None
 
 
 def get_db_connection():
@@ -42,47 +48,30 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
-        
         if 'Authorization' in request.headers:
             try:
                 token = request.headers['Authorization'].split(" ")[1]
             except IndexError:
                 return jsonify({'message': 'Token mal formaté'}), 401
-        
         if not token:
             return jsonify({'message': 'Token manquant'}), 401
-        
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
             with get_db_connection() as conn:
                 current_user = conn.execute(
-                    'SELECT * FROM users WHERE email = ?', 
+                    'SELECT * FROM users WHERE email = ?',
                     (data['email'],)
                 ).fetchone()
-            
             if not current_user:
                 return jsonify({'message': 'Utilisateur introuvable'}), 401
-                
         except jwt.ExpiredSignatureError:
             return jsonify({'message': 'Token expiré'}), 401
         except jwt.InvalidTokenError:
             return jsonify({'message': 'Token invalide'}), 401
         except Exception as e:
             return jsonify({'message': f'Erreur d\'authentification: {str(e)}'}), 500
-            
         return f(current_user, *args, **kwargs)
-        
     return decorated
-
-
-# Chargement du modèle à la demande
-@app.before_first_request
-def load_model():
-    global model
-    if model is None:
-        # Charger le modèle seulement quand nécessaire pour économiser des ressources
-        model = AutoModelForCausalLM.from_pretrained(model_name)
-
 
 # Page d'accueil
 @app.route('/')
@@ -199,15 +188,9 @@ def chat():
     
     user_message = messages[0].get("content", "")
     
-    # Tokenization du message utilisateur
-    inputs = tokenizer.encode(user_message, return_tensors="pt")
-    load_model()
-
-    # Générer la réponse du modèle
-    outputs = model.generate(inputs, max_length=50, num_return_sequences=1, temperature=0.7, top_p=0.9)
-    
-    # Décoder la réponse générée
-    bot_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    # Utilisation de l'API Groq pour obtenir la réponse
+    result = call_groq(messages)
+    bot_response = result["choices"][0]["message"]["content"]
 
     return jsonify({"choices": [{
             "message": {
@@ -217,8 +200,76 @@ def chat():
         }]}), 200
 
 
+# Nouveau endpoint pour utiliser Groq pour différentes fonctionnalités
+@app.route("/summarize", methods=["POST"])
+def summarize():
+    text = request.json.get("text", "")
+    messages = [
+        {"role": "system", "content": "Tu es un assistant expert en résumés. Résume le texte donné de manière concise."},
+        {"role": "user", "content": text}
+    ]
+    result = call_groq(messages)
+    summary = result["choices"][0]["message"]["content"]
+
+    return jsonify({
+        "result": summary,
+        "original_length": len(text),
+        "summary_length": len(summary)
+    })
+
+
+@app.route("/correct-text", methods=["POST"])
+def correct_text():
+    text = request.json.get("text", "")
+    messages = [
+        {"role": "system", "content": "Tu es un assistant qui corrige le texte avec suggestions grammaticales et orthographiques."},
+        {"role": "user", "content": text}
+    ]
+    result = call_groq(messages)
+    corrected = result["choices"][0]["message"]["content"]
+
+    return jsonify({
+        "corrected_text": corrected,
+        "suggestions": []  # tu peux extraire des suggestions via parsing si besoin
+    })
+
+
+@app.route("/translate", methods=["POST"])
+def translate():
+    text = request.json.get("text", "")
+    target_lang = request.json.get("lang", "en")
+    
+    messages = [
+        {"role": "system", "content": f"Traduis le texte en {target_lang}."},
+        {"role": "user", "content": text}
+    ]
+    
+    result = call_groq(messages)
+    translated = result["choices"][0]["message"]["content"]
+    
+    return jsonify({ "translated_text": translated })
+
+
+# Pour la détection d'objets YOLOv8 via ONNX
+@app.route("/detect-objects", methods=["POST"])
+def detect_objects_api():
+    data = request.json
+    image_data = data.get("image")
+
+    image_bytes = base64.b64decode(image_data.split(",")[1])
+    image = Image.open(BytesIO(image_bytes)).convert("RGB")
+
+    # Transformations de l'image
+    img = np.array(image)
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+
+    # Detection des objets via le modèle YOLOv8
+    objects = detect_objects(img)
+
+    return jsonify({"objects": objects})
+
+# Initialize DB
 init_db()
 
 if __name__ == '__main__':
-      # <-- important
     app.run(debug=True)

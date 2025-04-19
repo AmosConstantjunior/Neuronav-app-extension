@@ -5,7 +5,7 @@ from functools import wraps
 import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
-from utils.groq_client import call_groq,detect_objects  # Assurez-vous que le fichier groq_client.py existe avec la fonction call_groq
+from utils.groq_client import call_groq  # Assurez-vous que le fichier groq_client.py existe avec la fonction call_groq
 
 from io import BytesIO
 
@@ -187,7 +187,7 @@ def chat():
     user_message = messages[0].get("content", "")
     
     # Utilisation de l'API Groq pour obtenir la réponse
-    result = call_groq(messages)
+    result = call_groq(messages,api_key)
     bot_response = result["choices"][0]["message"]["content"]
 
     return jsonify({"choices": [{
@@ -206,7 +206,7 @@ def summarize():
         {"role": "system", "content": "Tu es un assistant expert en résumés. Résume le texte donné de manière concise."},
         {"role": "user", "content": text}
     ]
-    result = call_groq(messages)
+    result = call_groq(messages,api_key)
     summary = result["choices"][0]["message"]["content"]
 
     return jsonify({
@@ -223,7 +223,7 @@ def correct_text():
         {"role": "system", "content": "Tu es un assistant qui corrige le texte avec suggestions grammaticales et orthographiques."},
         {"role": "user", "content": text}
     ]
-    result = call_groq(messages)
+    result = call_groq(messages,api_key)
     corrected = result["choices"][0]["message"]["content"]
 
     return jsonify({
@@ -242,7 +242,7 @@ def translate():
         {"role": "user", "content": text}
     ]
     
-    result = call_groq(messages)
+    result = call_groq(messages,api_key)
     translated = result["choices"][0]["message"]["content"]
     
     return jsonify({ "translated_text": translated })

@@ -41,7 +41,7 @@ def call_groq(messages, api_key, **model_params):
 
 def detect_objects(image):
     # Charger le modèle YOLOv8 (assurez-vous que le fichier .onnx existe)
-    net = cv2.dnn.readNet("yolov8.onnx")
+    net = cv2.dnn.readNet("./yolov8m.onnx")
 
     # Obtenir les dimensions de l'image
     height, width = image.shape[:2]

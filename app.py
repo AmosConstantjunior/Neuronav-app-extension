@@ -6,11 +6,11 @@ import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 from utils.groq_client import call_groq,detect_objects  # Assurez-vous que le fichier groq_client.py existe avec la fonction call_groq
-from PIL import Image
-import base64
+# from PIL import Image
+# import base64
 from io import BytesIO
-import numpy as np
-import cv2
+# import numpy as np
+# import cv2
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'votre_cle_secrete_tres_securisee'
@@ -251,22 +251,22 @@ def translate():
 
 
 # Pour la détection d'objets YOLOv8 via ONNX
-@app.route("/detect-objects", methods=["POST"])
-def detect_objects_api():
-    data = request.json
-    image_data = data.get("image")
+# @app.route("/detect-objects", methods=["POST"])
+# def detect_objects_api():
+#     data = request.json
+#     image_data = data.get("image")
 
-    image_bytes = base64.b64decode(image_data.split(",")[1])
-    image = Image.open(BytesIO(image_bytes)).convert("RGB")
+#     image_bytes = base64.b64decode(image_data.split(",")[1])
+#     image = Image.open(BytesIO(image_bytes)).convert("RGB")
 
-    # Transformations de l'image
-    img = np.array(image)
-    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+#     # Transformations de l'image
+#     img = np.array(image)
+#     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
-    # Detection des objets via le modèle YOLOv8
-    objects = detect_objects(img)
+#     # Detection des objets via le modèle YOLOv8
+#     objects = detect_objects(img)
 
-    return jsonify({"objects": objects})
+#     return jsonify({"objects": objects})
 
 # Initialize DB
 init_db()

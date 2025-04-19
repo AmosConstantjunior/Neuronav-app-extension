@@ -269,5 +269,5 @@ def translate():
 # Initialize DB
 init_db()
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
